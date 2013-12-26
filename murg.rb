@@ -7,12 +7,17 @@ old_arr = ["red",0,"green",1,"yellow",2,"blue",3,"magenta",4,"cyan",5]
 
 arr = [0,1,2,3,4,5,"red","green","yellow","blue","magenta","cyan"]
 
-#TODO how do I calculate complements?
+#TODO FIXME how do I calculate complements?
+#red-cyan
+#green-magenta
+#blue-yellow
 
 rng = Random.new
 #rng2 = Random.new
 
-currLevel = 0 
+currLevel = 0
+
+points = 0 
 
 c = "s"
 
@@ -20,8 +25,35 @@ continue = true
 
 NUM_LEVELS = 8
 
+def secsToMillisecs(t)
+	return t*1000
+end
 
-def printJumble(word, color)
+def getComplement(color)
+	case color
+
+	when "red"
+		return "cyan"
+	when "green"
+		return "magenta"
+	when "yellow"
+		return "blue"
+	when "blue"
+		return "yellow"
+	when "magenta"
+		return "green"
+	when "cyan"
+		return "red"
+	else
+		puts "ERROR in getComplement"
+		return
+	end
+
+end
+
+timeAmount = secsToMillisecs(120)
+
+def printJumble(color, word)
 
 	arr = [0,1,2,3,4,5,"red","green","yellow","blue","magenta","cyan"]
 
@@ -31,7 +63,7 @@ def printJumble(word, color)
 
 	color = color % 6
 
-	puts "Entered printJumble!"
+	#puts "Entered printJumble!"
 
 	case color
 
@@ -54,36 +86,152 @@ end
 
 def singleColor()
 
-	#while time not expired
+	color = rng.rand(0..5)
+	word = rng.rand(6..11)
 
+	printJumble(color, word)
+
+	entry = gets.chomp
+
+	if (entry == arr[color+6])
+			return 1
+	else
+			return 0
+	end
 
 end
 
 def singleWord ()
 
-end
+	color = rng.rand(0..5)
+	word = rng.rand(6..11)
 
-def wordThenColor()
+	printJumble(color, word)
+
+	entry = gets.chomp
+
+	if (entry == arr[word])
+			return 1
+	else
+			return 0
+	end
 
 end
 
 def colorThenWord ()
+	
+	color = rng.rand(0..5)
+	word = rng.rand(6..11)
+
+	printJumble(color, word)
+
+	entry1 = gets.chomp
+	entry2 = gets.chomp
+
+	if (entry1 == arr[color+6] && entry2 == arr[word])
+			return 1
+	else
+			return 0
+	end
+
 
 end
 
+def wordThenColor()
+
+	color = rng.rand(0..5)
+	word = rng.rand(6..11)
+
+	printJumble(color,word)
+
+	entry1 = gets.chomp
+	#TODO how to get one line instead of two ie parse spaces?
+	entry2 = gets.chomp
+
+	if (entry1 == arr[word] && entry2 == arr[color+6])
+			return 1
+	else
+			return 0
+	end
+
+end
+
+
 def firstWordSecondColor()
+
+	color1 = rng.rand(0..5)
+	word1 = rng.rand(6..11)
+
+	color2 = rng.rand(0..5)
+	word2 = rng.rand(6..11)
+
+	printJumble(color1,word1)
+	printJumble(color2,word2)
+
+	entry1 = gets.chomp
+	entry2 = gets.chomp
+
+	if (entry1 == arr[word] && entry2 == arr[color+6])
+			return 1
+	else
+			return 0
+	end
 
 end
 
 def firstColorSecondWord()
 
+	color1 = rng.rand(0..5)
+	word1 = rng.rand(6..11)
+
+	color2 = rng.rand(0..5)
+	word2 = rng.rand(6..11)
+
+	printJumble(color1,word1)
+	printJumble(color2,word2)
+
+	entry1 = gets.chomp
+	entry2 = gets.chomp
+
+	if(entry1 == arr[color+6] && entry2 == arr[word])
+			return 1
+	else
+			return 0
+	end
+
 end
 
 def complementColor()
+	
+	color = rng.rand(0..5)
+	word = rng.rand(6..11)
+
+	printJumble(color,word)
+
+	entry = gets.chomp
+
+	if (entry == getComplement(arr[color+6]))
+			return 1
+	else
+			return 0
+	end
 
 end
 
 def complementWord()
+
+	color = rng.rand(0..5)
+	word = rng.rand(6..11)
+
+	printJumble(color,word)
+
+	entry = gets.chomp
+
+	if (entry == getComplement(arr[word]))
+			return 1
+	else
+			return 0
+	end
 
 end
 
@@ -119,6 +267,9 @@ def playLevel (n)
 	when 7
 		puts "Write the complement word"
 		complementWord()
+	else
+		puts "ERROR in playLevel"
+		return
 	end
 
 	time = 0 #FIXME
