@@ -3,9 +3,34 @@ require "rubygems"
 
 require "colored"
 #a combined array numbers corresponding the previous word string
-old_arr = ["red",0,"green",1,"yellow",2,"blue",3,"magenta",4,"cyan",5]
+#old_arr = ["red",0,"green",1,"yellow",2,"blue",3,"magenta",4,"cyan",5]
 
+puts "Welcome to MURG, a terminal text-based game.
+Made by Leo Rudberg (LOZORD) in 2013-14. Written in Ruby.".magenta()
+	
 $arr = [0,1,2,3,4,5,"red","green","yellow","blue","magenta","cyan"]
+
+
+
+
+def printColorHelp()
+	puts "Red looks like this".red()
+	puts "Green looks like this".green()
+	puts "Yellow looks like this".yellow()
+	puts "Blue looks like this".blue()
+	puts "Magenta looks like this".magenta()
+	puts "Cyan looks like this".cyan()
+	puts "Complements are:"
+	puts "Red and Cyan"
+	puts "Green and Magenta"
+	puts "Blue and Yellow"
+	puts "When prompted for 'color', enter the color in which the word appears"
+	puts "When prompted for 'word', enter the word that is written"
+	puts "I apologize to all the colorblind folks out there!"
+end
+
+
+
 
 #TODO FIXME how do I calculate complements?
 #red-cyan
@@ -171,7 +196,7 @@ def firstWordSecondColor()
 	entry1 = gets.chomp
 	entry2 = gets.chomp
 
-	if (entry1 == $arr[word] && entry2 == $arr[color+6])
+	if (entry1 == $arr[word1] && entry2 == $arr[color2+6])
 			return 1
 	else
 			return 0
@@ -193,7 +218,7 @@ def firstColorSecondWord()
 	entry1 = gets.chomp
 	entry2 = gets.chomp
 
-	if(entry1 == $arr[color+6] && entry2 == $arr[word])
+	if(entry1 == $arr[color1+6] && entry2 == $arr[word2])
 			return 1
 	else
 			return 0
@@ -242,6 +267,8 @@ def playLevel (n)
 	
 	lvl = n % NUM_LEVELS
 
+	oldPoints = $points
+
 	case lvl
 	when 0
 		puts "Write the color, not the word"
@@ -272,6 +299,12 @@ def playLevel (n)
 		return
 	end
 
+	if (oldPoints != $points)
+			puts "Success!".green()
+	else
+			puts "Failure".red()
+	end
+
 #	time = 0 #FIXME
 #	while (time != 0)
 		#stuff here
@@ -281,32 +314,36 @@ def playLevel (n)
 
 end
 
+puts "Please enter 'h' if this is your first time playing".blue()
 
 while (continue)
 
-	puts "Please enter 's' to begin or 'q' to quit".red()
+	puts "Please enter 's' to begin or 'q' to quit".yellow()
 	
 	c = gets.chomp
 
 	if c == "s"
-		puts "Starting level"
+		puts "Starting the level"
 		playLevel(currLevel)
 		currLevel += 1
 	elsif c == "q"
 		continue = false 
 	elsif c == "HELLO"
 		puts "Hello to you!"
-	elsif c == "t"
-		puts "TESTING"
-		x = gets.chomp
-		y = gets.chomp
+	##elsif c == "t"
+	#	puts "TESTING"
+	#	x = gets.chomp
+	#	y = gets.chomp
 
-		x = x.to_i
-		y = y.to_i
+	#	x = x.to_i
+	#	y = y.to_i
 
-		printJumble(x,y)
+	#	printJumble(x,y)
+	elsif c == "h"
+		printColorHelp()
 	else
 		puts c
+		puts "JUNK ERROR"
 	end
 
 
