@@ -5,19 +5,19 @@ require "colored"
 #a combined array numbers corresponding the previous word string
 old_arr = ["red",0,"green",1,"yellow",2,"blue",3,"magenta",4,"cyan",5]
 
-arr = [0,1,2,3,4,5,"red","green","yellow","blue","magenta","cyan"]
+$arr = [0,1,2,3,4,5,"red","green","yellow","blue","magenta","cyan"]
 
 #TODO FIXME how do I calculate complements?
 #red-cyan
 #green-magenta
 #blue-yellow
 
-rng = Random.new
+$rng = Random.new
 #rng2 = Random.new
 
 currLevel = 0
 
-points = 0 
+$points = 0 
 
 c = "s"
 
@@ -51,11 +51,11 @@ def getComplement(color)
 
 end
 
-timeAmount = secsToMillisecs(120)
+$timeAmount = secsToMillisecs(120)
 
 def printJumble(color, word)
 
-	arr = [0,1,2,3,4,5,"red","green","yellow","blue","magenta","cyan"]
+	#arr = [0,1,2,3,4,5,"red","green","yellow","blue","magenta","cyan"]
 
 	#word = rng.rand(6..11)
 
@@ -68,17 +68,17 @@ def printJumble(color, word)
 	case color
 
 	when 0
-		puts arr[word].red()
+		puts $arr[word].red()
 	when 1
-		puts arr[word].green()
+		puts $arr[word].green()
 	when 2
-		puts arr[word].yellow()
+		puts $arr[word].yellow()
 	when 3
-		puts arr[word].blue()
+		puts $arr[word].blue()
 	when 4
-		puts arr[word].magenta()
+		puts $arr[word].magenta()
 	when 5
-		puts arr[word].cyan()
+		puts $arr[word].cyan()
 	end
 
 end
@@ -86,14 +86,14 @@ end
 
 def singleColor()
 
-	color = rng.rand(0..5)
-	word = rng.rand(6..11)
+	color = $rng.rand(0..5)
+	word = $rng.rand(6..11)
 
 	printJumble(color, word)
 
 	entry = gets.chomp
 
-	if (entry == arr[color+6])
+	if (entry == $arr[color+6])
 			return 1
 	else
 			return 0
@@ -103,14 +103,14 @@ end
 
 def singleWord ()
 
-	color = rng.rand(0..5)
-	word = rng.rand(6..11)
+	color = $rng.rand(0..5)
+	word = $rng.rand(6..11)
 
 	printJumble(color, word)
 
 	entry = gets.chomp
 
-	if (entry == arr[word])
+	if (entry == $arr[word])
 			return 1
 	else
 			return 0
@@ -120,15 +120,15 @@ end
 
 def colorThenWord ()
 	
-	color = rng.rand(0..5)
-	word = rng.rand(6..11)
+	color = $rng.rand(0..5)
+	word = $rng.rand(6..11)
 
 	printJumble(color, word)
 
 	entry1 = gets.chomp
 	entry2 = gets.chomp
 
-	if (entry1 == arr[color+6] && entry2 == arr[word])
+	if (entry1 == $arr[color+6] && entry2 == $arr[word])
 			return 1
 	else
 			return 0
@@ -139,8 +139,8 @@ end
 
 def wordThenColor()
 
-	color = rng.rand(0..5)
-	word = rng.rand(6..11)
+	color = $rng.rand(0..5)
+	word = $rng.rand(6..11)
 
 	printJumble(color,word)
 
@@ -148,7 +148,7 @@ def wordThenColor()
 	#TODO how to get one line instead of two ie parse spaces?
 	entry2 = gets.chomp
 
-	if (entry1 == arr[word] && entry2 == arr[color+6])
+	if (entry1 == $arr[word] && entry2 == $arr[color+6])
 			return 1
 	else
 			return 0
@@ -159,11 +159,11 @@ end
 
 def firstWordSecondColor()
 
-	color1 = rng.rand(0..5)
-	word1 = rng.rand(6..11)
+	color1 = $rng.rand(0..5)
+	word1 = $rng.rand(6..11)
 
-	color2 = rng.rand(0..5)
-	word2 = rng.rand(6..11)
+	color2 = $rng.rand(0..5)
+	word2 = $rng.rand(6..11)
 
 	printJumble(color1,word1)
 	printJumble(color2,word2)
@@ -171,7 +171,7 @@ def firstWordSecondColor()
 	entry1 = gets.chomp
 	entry2 = gets.chomp
 
-	if (entry1 == arr[word] && entry2 == arr[color+6])
+	if (entry1 == $arr[word] && entry2 == $arr[color+6])
 			return 1
 	else
 			return 0
@@ -181,11 +181,11 @@ end
 
 def firstColorSecondWord()
 
-	color1 = rng.rand(0..5)
-	word1 = rng.rand(6..11)
+	color1 = $rng.rand(0..5)
+	word1 = $rng.rand(6..11)
 
-	color2 = rng.rand(0..5)
-	word2 = rng.rand(6..11)
+	color2 = $rng.rand(0..5)
+	word2 = $rng.rand(6..11)
 
 	printJumble(color1,word1)
 	printJumble(color2,word2)
@@ -193,7 +193,7 @@ def firstColorSecondWord()
 	entry1 = gets.chomp
 	entry2 = gets.chomp
 
-	if(entry1 == arr[color+6] && entry2 == arr[word])
+	if(entry1 == $arr[color+6] && entry2 == $arr[word])
 			return 1
 	else
 			return 0
@@ -203,14 +203,14 @@ end
 
 def complementColor()
 	
-	color = rng.rand(0..5)
-	word = rng.rand(6..11)
+	color = $rng.rand(0..5)
+	word = $rng.rand(6..11)
 
 	printJumble(color,word)
 
 	entry = gets.chomp
 
-	if (entry == getComplement(arr[color+6]))
+	if (entry == getComplement($arr[color+6]))
 			return 1
 	else
 			return 0
@@ -220,14 +220,14 @@ end
 
 def complementWord()
 
-	color = rng.rand(0..5)
-	word = rng.rand(6..11)
+	color = $rng.rand(0..5)
+	word = $rng.rand(6..11)
 
 	printJumble(color,word)
 
 	entry = gets.chomp
 
-	if (entry == getComplement(arr[word]))
+	if (entry == getComplement($arr[word]))
 			return 1
 	else
 			return 0
@@ -245,37 +245,37 @@ def playLevel (n)
 	case lvl
 	when 0
 		puts "Write the color, not the word"
-		singleColor()
+		$points += singleColor()
 	when 1
 		puts "Write the word, not the color"
-		singleWord()
+		$points += singleWord()
 	when 2
 		puts "Write the color, followed by the word"
-		colorThenWord()
+		$points += colorThenWord()
 	when 3
 		puts "Write the word, followed by the color"
-		wordThenColor()
+		$points += wordThenColor()
 	when 4
 		puts "Write the first color, then the second word"
-		firstColorSecondWord()
+		$points += firstColorSecondWord()
 	when 5
 		puts "Write the first word, then the second color"
-		firstWordSecondColor()
+		$points += firstWordSecondColor()
 	when 6
 		puts "Write the complement color"
-		complementColor()
+		$points += complementColor()
 	when 7
 		puts "Write the complement word"
-		complementWord()
+		$points += complementWord()
 	else
 		puts "ERROR in playLevel"
 		return
 	end
 
-	time = 0 #FIXME
-	while (time != 0)
+#	time = 0 #FIXME
+#	while (time != 0)
 		#stuff here
-	end
+#	end
 	
 	puts "Level over".cyan()
 
@@ -297,7 +297,7 @@ while (continue)
 	elsif c == "HELLO"
 		puts "Hello to you!"
 	elsif c == "t"
-		puts "TESTING, first enter a numer 6..11, then 0..5"
+		puts "TESTING"
 		x = gets.chomp
 		y = gets.chomp
 
@@ -315,4 +315,4 @@ end
 	
 
 
-puts ("Congrats! You got to level #{currLevel}")
+puts ("Congrats! You got to level #{currLevel}, with #{$points} points!")
