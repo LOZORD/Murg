@@ -8,11 +8,13 @@ require "colored"
 puts "Welcome to MURG, a terminal text-based game.
 Made by Leo Rudberg (LOZORD) in 2013-14. Written in Ruby.".magenta()
 	
+#the main array containing the colors and their names
+#a color names appears 6 indicies after its number
 $arr = [0,1,2,3,4,5,"red","green","yellow","blue","magenta","cyan"]
 
 
 
-
+#a "help menu function"
 def printColorHelp()
 	puts "Red looks like this".red()
 	puts "Green looks like this".green()
@@ -31,29 +33,35 @@ end
 
 
 
-
-#TODO FIXME how do I calculate complements?
+#REMINDING MYSELF ABOUT RGB COMPLEMENTS
 #red-cyan
 #green-magenta
 #blue-yellow
 
+#the random number generator used in the game
 $rng = Random.new
-#rng2 = Random.new
 
+#the players progress in the game
 currLevel = 0
 
+#the amount of successful answers
 $points = 0 
 
+#a user input variable
 c = "s"
 
+#bool for continuing gameplay
 continue = true
 
+#the amount of types of levels
 NUM_LEVELS = 8
 
+#a time conversion function
 def secsToMillisecs(t)
 	return t*1000
 end
 
+#given the name of a color, it returns the name of its complement
 def getComplement(color)
 	case color
 
@@ -76,19 +84,15 @@ def getComplement(color)
 
 end
 
+#the initial amount of time given to the player (2 minutes)
+#as the game progresses, this time shrinks
 $timeAmount = secsToMillisecs(120)
 
+#the thoroughly used function that prints the name of a color given WORD
+#in the color given COLOR
 def printJumble(color, word)
 
-	#arr = [0,1,2,3,4,5,"red","green","yellow","blue","magenta","cyan"]
-
-	#word = rng.rand(6..11)
-
-	#color = rng.rand(0..5)
-
 	color = color % 6
-
-	#puts "Entered printJumble!"
 
 	case color
 
@@ -108,7 +112,14 @@ def printJumble(color, word)
 
 end
 
+#THE GAME MODES
+#TODO implement in-level looping and timing
+#TODO implement single line parsing
+#Game modes return a boolean-like 1 or 0 to the points counter
+#if the player answers a question successfully
 
+#gameplay mode 1/8
+#asks for the color that the word is written in
 def singleColor()
 
 	color = $rng.rand(0..5)
@@ -126,6 +137,8 @@ def singleColor()
 
 end
 
+#gameplay mode 2/8
+#asks for the word that is written
 def singleWord ()
 
 	color = $rng.rand(0..5)
@@ -143,6 +156,8 @@ def singleWord ()
 
 end
 
+#gameplay mode 3/8
+#asks for the color the word is written in,and then the word
 def colorThenWord ()
 	
 	color = $rng.rand(0..5)
@@ -162,6 +177,8 @@ def colorThenWord ()
 
 end
 
+#gameplay mode 4/8
+#asks for the word written, and then the color it is written in
 def wordThenColor()
 
 	color = $rng.rand(0..5)
@@ -181,7 +198,9 @@ def wordThenColor()
 
 end
 
-
+#gameplay mode 5/8
+#asks for the first word written,
+#then the color of the second word written
 def firstWordSecondColor()
 
 	color1 = $rng.rand(0..5)
@@ -204,6 +223,9 @@ def firstWordSecondColor()
 
 end
 
+#gameplay mode 6/8
+#asks for the color of the first word written,
+#then the second word written
 def firstColorSecondWord()
 
 	color1 = $rng.rand(0..5)
@@ -226,6 +248,8 @@ def firstColorSecondWord()
 
 end
 
+#gameplay mode 7/8
+#asks for the complement color of the color of the word written
 def complementColor()
 	
 	color = $rng.rand(0..5)
@@ -243,6 +267,8 @@ def complementColor()
 
 end
 
+#gameplay mode 8/8
+#asks for the complement color of the color name written
 def complementWord()
 
 	color = $rng.rand(0..5)
@@ -261,8 +287,8 @@ def complementWord()
 end
 
 
-
-
+#play one of 8 levels
+#when the level is over, add successes to points sum
 def playLevel (n)
 	
 	lvl = n % NUM_LEVELS
@@ -299,57 +325,48 @@ def playLevel (n)
 		return
 	end
 
+	#if the player scored during the round at all
 	if (oldPoints != $points)
 			puts "Success!".green()
 	else
+			#XXX maybe automatically quit game if no points earned?
 			puts "Failure".red()
 	end
 
-#	time = 0 #FIXME
-#	while (time != 0)
-		#stuff here
-#	end
-	
+	#TODO maybe put score summary here?	
 	puts "Level over".cyan()
 
 end
 
-puts "Please enter 'h' if this is your first time playing".blue()
+puts "Please enter 'h' for help if this is your first time playing".blue()
 
+
+#XXX THE MAIN GAME LOOP XXX
 while (continue)
 
-	puts "Please enter 's' to begin or 'q' to quit".yellow()
+	puts "Please enter 's' to start or 'q' to quit".yellow()
 	
 	c = gets.chomp
 
+	#if the player chooses to start the level
 	if c == "s"
 		puts "Starting the level"
 		playLevel(currLevel)
 		currLevel += 1
+	#if the player chooses to quit
 	elsif c == "q"
-		continue = false 
-	elsif c == "HELLO"
-		puts "Hello to you!"
-	##elsif c == "t"
-	#	puts "TESTING"
-	#	x = gets.chomp
-	#	y = gets.chomp
-
-	#	x = x.to_i
-	#	y = y.to_i
-
-	#	printJumble(x,y)
+		continue = false
+	#if the player wants help
 	elsif c == "h"
 		printColorHelp()
+	#bad input
 	else
-		puts c
 		puts "JUNK ERROR"
 	end
 
-
 end 	
 
-	
 
-
-puts ("Congrats! You got to level #{currLevel}, with #{$points} points!")
+#XXX FINAL SCORE SUMMARY XXX
+puts ("Congrats! You got to level #{currLevel}, with #{$points} points!".magenta())
+#END OF CODE
