@@ -3,9 +3,6 @@ require "rubygems"
 
 require "colored"
 
-#require 'timeout'
-
-
 puts "Welcome to MURG, a terminal text-based game.
 Made by Leo Rudberg (LOZORD) in 2013-14. Written in Ruby.".magenta()
 	
@@ -13,7 +10,7 @@ Made by Leo Rudberg (LOZORD) in 2013-14. Written in Ruby.".magenta()
 #a color names appears 6 indicies after its number
 $arr = [0,1,2,3,4,5,"red","green","yellow","blue","magenta","cyan"]
 
-
+#TODO add early exit mode once player gains enought points (e.g. enter x if you are content with your points)
 
 #a "help menu function"
 def printColorHelp()
@@ -30,6 +27,8 @@ def printColorHelp()
 	puts "When prompted for 'color', enter the color in which the word appears"
 	puts "When prompted for 'word', enter the word that is written"
 	puts "Please enter all data in lowercase and in a single line when prompted for two words"
+	puts "Once you have attained the required points for a given level, "\
+	 "you will be asked if you want to skip to the next level"
 	puts "I apologize to all the colorblind folks out there!"
 end
 
@@ -38,7 +37,7 @@ end
 $rng = Random.new
 
 #the players progress in the game
-$currLevel = 0
+$currLevel = 1
 
 #the amount of successful answers
 $points = 0 
@@ -63,11 +62,11 @@ NUM_LEVELS = 8
 #starts at 150 seconds, aka 2.5 minutes
 $timeAvailable = 150
 
-#XXX not needed if using timeout
+#XXX not needed
 #a time conversion function
-def secsToMillisecs(t)
-	return t*1000
-end
+#def secsToMillisecs(t)
+#	return t*1000
+#end
 
 #given the name of a color, it returns the name of its complement
 def getComplement(color)
@@ -320,7 +319,7 @@ end
 #when the level is over, add successes to points sum
 def playLevel (n)
 	
-	lvl = n % NUM_LEVELS
+	lvl = ((n - 1) % NUM_LEVELS)
 
 	oldPoints = $points
 
@@ -328,7 +327,7 @@ def playLevel (n)
 
 	roundPoints = 0
 
-	puts "You have #{$timeAvailable} seconds to score at" \
+	puts "You have #{$timeAvailable} seconds to score at " \
 		"least #{$currLevel} points.\nGood luck!"
 
 	case lvl
@@ -390,8 +389,13 @@ def playLevel (n)
 			return
 		end
 
-		# if (roundPoints == $currLevel)
-		# 	break
+		if (roundPoints == $currLevel)
+	 		puts "---POINT LEVEL REACHED---\nSkip ahead? (y/n)"
+	 		c = gets.chomp
+	 		if (c == "y")
+	 			break
+	 		end
+	 	end
 	end
 
 	#TODO maybe put score summary here?	
