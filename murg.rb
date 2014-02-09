@@ -10,7 +10,7 @@ Made by Leo Rudberg (LOZORD) in 2013-14. Written in Ruby.".magenta()
 #a color names appears 6 indicies after its number
 $arr = [0,1,2,3,4,5,"red","green","yellow","blue","magenta","cyan"]
 
-#TODO add early exit mode once player gains enought points (e.g. enter x if you are content with your points)
+#TODO add class structure to make all of these global vars nicer
 
 #a "help menu function"
 def printColorHelp()
@@ -52,21 +52,12 @@ $continue = true
 #the amount of types of levels
 NUM_LEVELS = 8
 
-#the number of points a player is required to score to win the level
-#this increases as play goes on
-#$pointsNeeded = 1
-#XXX THIS SHALL BE BASED OFF OF currLevel
 
 #the time allotted to the player for a game round
 #this decreases to a limit as play goes on
 #starts at 150 seconds, aka 2.5 minutes
 $timeAvailable = 150
 
-#XXX not needed
-#a time conversion function
-#def secsToMillisecs(t)
-#	return t*1000
-#end
 
 #given the name of a color, it returns the name of its complement
 def getComplement(color)
@@ -91,17 +82,10 @@ def getComplement(color)
 
 end
 
-# #the initial amount of time given to the player (2 minutes)
-# #as the game progresses, this time shrinks
-# $timeAmount = secsToMillisecs(120)
 
 #the thoroughly used function that prints the name of a color given WORD
 #in the color given COLOR
 def printJumble(color, word)
-
-	#gotta be sure that color is in the index
-	#XXX commented out, will add back if it breaks game
-	# color = color % 6
 
 	case color
 
@@ -122,22 +106,12 @@ def printJumble(color, word)
 end
 
 #THE GAME MODES
-#TODO implement in-level looping and timing
-#TODO implement single line parsing
 #Game modes return a boolean-like 1 or 0 to the points counter
 #if the player answers a question successfully
 
 #gameplay mode 1/8
 #asks for the color that the word is written in
 def singleColor()
-
-	# roundPoints = 0
-
-	# start = Time.now
-
-	# while (Time.now < start + 5)
-	# 	puts "Hello"
-	# end
 
 	color = $rng.rand(0..5)
 	word = $rng.rand(6..11)
@@ -182,9 +156,6 @@ def colorThenWord ()
 
 	printJumble(color, word)
 
-	# entry1 = gets.chomp
-	# entry2 = gets.chomp
-
 	lineArr = gets.chomp.split
 
 	if (lineArr[0] == $arr[color+6] && lineArr[1] == $arr[word])
@@ -204,10 +175,6 @@ def wordThenColor()
 	word = $rng.rand(6..11)
 
 	printJumble(color,word)
-
-	# entry1 = gets.chomp
-	# #TODO how to get one line instead of two ie parse spaces?
-	# entry2 = gets.chomp
 
 	lineArr = gets.chomp.split
 
@@ -233,9 +200,6 @@ def firstWordSecondColor()
 	printJumble(color1,word1)
 	printJumble(color2,word2)
 
-	# entry1 = gets.chomp
-	# entry2 = gets.chomp
-
 	lineArr = gets.chomp.split
 
 	if (lineArr[0] == $arr[word1] && lineArr[1] == $arr[color2+6])
@@ -259,9 +223,6 @@ def firstColorSecondWord()
 
 	printJumble(color1,word1)
 	printJumble(color2,word2)
-
-	# entry1 = gets.chomp
-	# entry2 = gets.chomp
 
 	lineArr = gets.chomp.split
 
@@ -333,39 +294,32 @@ def playLevel (n)
 	case lvl
 	when 0
 		puts "Write the color, not the word"
-		# while (Time.now < start)
-		# roundPoints += singleColor()
 	when 1
 		puts "Write the word, not the color"
-		# $points += singleWord()
 	when 2
 		puts "Write the color, followed by the word"
-		# $points += colorThenWord()
 	when 3
 		puts "Write the word, followed by the color"
-		# $points += wordThenColor()
 	when 4
 		puts "Write the first color, then the second word"
-		# $points += firstColorSecondWord()
 	when 5
 		puts "Write the first word, then the second color"
-		# $points += firstWordSecondColor()
 	when 6
 		puts "Write the complement color"
-		# $points += complementColor()
 	when 7
 		puts "Write the complement word"
-		# $points += complementWord()
 	else
 		puts "ERROR in playLevel directions"
 		return
-
-
 	end
 
+	#start the level timer
 	start = Time.now
 
-	while (Time.now < start + $timeAvailable)
+	while (Time.now < (start + $timeAvailable))
+
+		if (((Time.now - start) % 10) == 0)
+			puts "\t\t#{ime.now - start} seconds remaining"
 
 		case lvl
 		when 0
@@ -389,6 +343,7 @@ def playLevel (n)
 			return
 		end
 
+		#early exit option if points satisfied
 		if (roundPoints == $currLevel)
 	 		puts "---POINT LEVEL REACHED---\nSkip ahead? (y/n)"
 	 		c = gets.chomp
@@ -398,17 +353,21 @@ def playLevel (n)
 	 	end
 	end
 
-	#TODO maybe put score summary here?	
-	puts "Level over".cyan()
+	puts "LEVEL OVER".cyan()
 
-	# #if the player scored during the round at all
-	# if (oldPoints != $points)
-	# 		puts "Good job!".green()
-	# else
-	# 		#XXX maybe automatically quit game if no points earned?
-	# 		puts "You lose!".red()
-	# 		$continue = false
-	# end
+	# BUG: Write the color, not the word
+	# cyan
+	# red
+	# LEVEL OVER
+	# Good job!
+	# Please enter 's' to start or 'q' to quit
+
+	# Please enter in a valid command!
+	# Please enter 's' to start or 'q' to quit
+		#maybe I hit enter twice?
+
+	#Another BUG:
+	#User keeps on hitting enter
 
 
 	if ($currLevel > roundPoints)
@@ -426,7 +385,7 @@ def playLevel (n)
 end
 
 
-#XXX fast forward to here
+#XXX fast forward to here (aka beginning a game)
 puts "Please enter 'h' for help if this is your first time playing".blue()
 
 
@@ -457,5 +416,5 @@ end
 
 
 #XXX FINAL SCORE SUMMARY XXX
-puts ("GAME OVER\n\tYou got to level #{$currLevel}, with #{$points} points!".magenta())
+puts ("GAME OVER\n\tYou got to level #{$currLevel}, with #{$points} point(s)!".magenta())
 #END OF CODE
