@@ -29,34 +29,41 @@ def printColorHelp()
 	puts "Blue and Yellow"
 	puts "When prompted for 'color', enter the color in which the word appears"
 	puts "When prompted for 'word', enter the word that is written"
+	puts "Please enter all data in lowercase and in a single line when prompted for two words"
 	puts "I apologize to all the colorblind folks out there!"
 end
 
-
-
-#REMINDING MYSELF ABOUT RGB COMPLEMENTS
-#red-cyan
-#green-magenta
-#blue-yellow
 
 #the random number generator used in the game
 $rng = Random.new
 
 #the players progress in the game
-currLevel = 0
+$currLevel = 0
 
 #the amount of successful answers
 $points = 0 
 
-#a user input variable
+#a user input variable, an artifact of my non-dynamic coding...
 c = "s"
 
-#bool for continuing gameplay
+#bool for continuing gameplay 
+#(i.e. whether player is allowed to continue if (s)he wants)
 $continue = true
 
 #the amount of types of levels
 NUM_LEVELS = 8
 
+#the number of points a player is required to score to win the level
+#this increases as play goes on
+#$pointsNeeded = 1
+#XXX THIS SHALL BE BASED OFF OF currLevel
+
+#the time allotted to the player for a game round
+#this decreases to a limit as play goes on
+#starts at 150 seconds, aka 2.5 minutes
+$timeAvailable = 150
+
+#XXX not needed if using timeout
 #a time conversion function
 def secsToMillisecs(t)
 	return t*1000
@@ -85,15 +92,17 @@ def getComplement(color)
 
 end
 
-#the initial amount of time given to the player (2 minutes)
-#as the game progresses, this time shrinks
-$timeAmount = secsToMillisecs(120)
+# #the initial amount of time given to the player (2 minutes)
+# #as the game progresses, this time shrinks
+# $timeAmount = secsToMillisecs(120)
 
 #the thoroughly used function that prints the name of a color given WORD
 #in the color given COLOR
 def printJumble(color, word)
 
-	color = color % 6
+	#gotta be sure that color is in the index
+	#XXX commented out, will add back if it breaks game
+	# color = color % 6
 
 	case color
 
@@ -122,6 +131,14 @@ end
 #gameplay mode 1/8
 #asks for the color that the word is written in
 def singleColor()
+
+	# roundPoints = 0
+
+	# start = Time.now
+
+	# while (Time.now < start + 5)
+	# 	puts "Hello"
+	# end
 
 	color = $rng.rand(0..5)
 	word = $rng.rand(6..11)
@@ -295,6 +312,9 @@ def complementWord()
 
 end
 
+#TODO see if the game modes can be combined into one
+#gotta be DRY...
+
 
 #play one of 8 levels
 #when the level is over, add successes to points sum
@@ -304,50 +324,103 @@ def playLevel (n)
 
 	oldPoints = $points
 
+	# start = Time.now
+
+	roundPoints = 0
+
+	puts "You have #{$timeAvailable} seconds to score at" \
+		"least #{$currLevel} points.\nGood luck!"
+
 	case lvl
 	when 0
 		puts "Write the color, not the word"
-		$points += singleColor()
+		# while (Time.now < start)
+		# roundPoints += singleColor()
 	when 1
 		puts "Write the word, not the color"
-		$points += singleWord()
+		# $points += singleWord()
 	when 2
 		puts "Write the color, followed by the word"
-		$points += colorThenWord()
+		# $points += colorThenWord()
 	when 3
 		puts "Write the word, followed by the color"
-		$points += wordThenColor()
+		# $points += wordThenColor()
 	when 4
 		puts "Write the first color, then the second word"
-		$points += firstColorSecondWord()
+		# $points += firstColorSecondWord()
 	when 5
 		puts "Write the first word, then the second color"
-		$points += firstWordSecondColor()
+		# $points += firstWordSecondColor()
 	when 6
 		puts "Write the complement color"
-		$points += complementColor()
+		# $points += complementColor()
 	when 7
 		puts "Write the complement word"
-		$points += complementWord()
+		# $points += complementWord()
 	else
-		puts "ERROR in playLevel"
+		puts "ERROR in playLevel directions"
 		return
+
+
+	end
+
+	start = Time.now
+
+	while (Time.now < start + $timeAvailable)
+
+		case lvl
+		when 0
+			roundPoints += singleColor()
+		when 1
+			roundPoints += singleWord()
+		when 2
+			roundPoints += colorThenWord()
+		when 3
+			roundPoints += wordThenColor()
+		when 4
+			roundPoints += firstColorSecondWord()
+		when 5
+			roundPoints += firstWordSecondColor()
+		when 6
+			roundPoints += complementColor()
+		when 7
+			roundPoints += complementWord()
+		else 
+			puts "ERROR in playLevel selection"
+			return
+		end
+
+		# if (roundPoints == $currLevel)
+		# 	break
 	end
 
 	#TODO maybe put score summary here?	
 	puts "Level over".cyan()
 
-	#if the player scored during the round at all
-	if (oldPoints != $points)
-			puts "Good job!".green()
+	# #if the player scored during the round at all
+	# if (oldPoints != $points)
+	# 		puts "Good job!".green()
+	# else
+	# 		#XXX maybe automatically quit game if no points earned?
+	# 		puts "You lose!".red()
+	# 		$continue = false
+	# end
+
+
+	if ($currLevel > roundPoints)
+		puts "You lose!".red()
+		$continue = false
 	else
-			#XXX maybe automatically quit game if no points earned?
-			puts "You lose!".red()
-			$continue = false
+		puts "Good job!".green()
+		$currLevel += 1
+		$points += roundPoints
+		$timeAvailable -= 5
 	end
 
 end
 
+
+#XXX fast forward to here
 puts "Please enter 'h' for help if this is your first time playing".blue()
 
 
@@ -360,9 +433,9 @@ while ($continue)
 
 	#if the player chooses to start the level
 	if c == "s"
-		puts "Starting the level"
-		playLevel(currLevel)
-		currLevel += 1
+		#puts "Starting the level"
+		playLevel($currLevel)
+		#$pointsNeeded += 1
 	#if the player chooses to quit
 	elsif c == "q"
 		$continue = false
@@ -371,12 +444,12 @@ while ($continue)
 		printColorHelp()
 	#bad input
 	else
-		puts "JUNK ERROR"
+		puts "Please enter in a valid command!"
 	end
 
 end 	
 
 
 #XXX FINAL SCORE SUMMARY XXX
-puts ("Congrats! You got to level #{currLevel}, with #{$points} points!".magenta())
+puts ("GAME OVER\n\tYou got to level #{$currLevel}, with #{$points} points!".magenta())
 #END OF CODE
