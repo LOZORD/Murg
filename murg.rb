@@ -2,8 +2,9 @@
 require "rubygems"
 
 require "colored"
-#a combined array numbers corresponding the previous word string
-#old_arr = ["red",0,"green",1,"yellow",2,"blue",3,"magenta",4,"cyan",5]
+
+require 'timeout'
+
 
 puts "Welcome to MURG, a terminal text-based game.
 Made by Leo Rudberg (LOZORD) in 2013-14. Written in Ruby.".magenta()
@@ -51,7 +52,7 @@ $points = 0
 c = "s"
 
 #bool for continuing gameplay
-continue = true
+$continue = true
 
 #the amount of types of levels
 NUM_LEVELS = 8
@@ -165,10 +166,12 @@ def colorThenWord ()
 
 	printJumble(color, word)
 
-	entry1 = gets.chomp
-	entry2 = gets.chomp
+	# entry1 = gets.chomp
+	# entry2 = gets.chomp
 
-	if (entry1 == $arr[color+6] && entry2 == $arr[word])
+	lineArr = gets.chomp.split
+
+	if (lineArr[0] == $arr[color+6] && lineArr[1] == $arr[word])
 			return 1
 	else
 			return 0
@@ -186,11 +189,13 @@ def wordThenColor()
 
 	printJumble(color,word)
 
-	entry1 = gets.chomp
-	#TODO how to get one line instead of two ie parse spaces?
-	entry2 = gets.chomp
+	# entry1 = gets.chomp
+	# #TODO how to get one line instead of two ie parse spaces?
+	# entry2 = gets.chomp
 
-	if (entry1 == $arr[word] && entry2 == $arr[color+6])
+	lineArr = gets.chomp.split
+
+	if (lineArr[0] == $arr[word] && lineArr[1] == $arr[color+6])
 			return 1
 	else
 			return 0
@@ -212,10 +217,12 @@ def firstWordSecondColor()
 	printJumble(color1,word1)
 	printJumble(color2,word2)
 
-	entry1 = gets.chomp
-	entry2 = gets.chomp
+	# entry1 = gets.chomp
+	# entry2 = gets.chomp
 
-	if (entry1 == $arr[word1] && entry2 == $arr[color2+6])
+	lineArr = gets.chomp.split
+
+	if (lineArr[0] == $arr[word1] && lineArr[1] == $arr[color2+6])
 			return 1
 	else
 			return 0
@@ -237,10 +244,12 @@ def firstColorSecondWord()
 	printJumble(color1,word1)
 	printJumble(color2,word2)
 
-	entry1 = gets.chomp
-	entry2 = gets.chomp
+	# entry1 = gets.chomp
+	# entry2 = gets.chomp
 
-	if(entry1 == $arr[color1+6] && entry2 == $arr[word2])
+	lineArr = gets.chomp.split
+
+	if(lineArr[0] == $arr[color1+6] && lineArr[1] == $arr[word2])
 			return 1
 	else
 			return 0
@@ -325,16 +334,17 @@ def playLevel (n)
 		return
 	end
 
-	#if the player scored during the round at all
-	if (oldPoints != $points)
-			puts "Success!".green()
-	else
-			#XXX maybe automatically quit game if no points earned?
-			puts "Failure".red()
-	end
-
 	#TODO maybe put score summary here?	
 	puts "Level over".cyan()
+
+	#if the player scored during the round at all
+	if (oldPoints != $points)
+			puts "Good job!".green()
+	else
+			#XXX maybe automatically quit game if no points earned?
+			puts "You lose!".red()
+			$continue = false
+	end
 
 end
 
@@ -342,7 +352,7 @@ puts "Please enter 'h' for help if this is your first time playing".blue()
 
 
 #XXX THE MAIN GAME LOOP XXX
-while (continue)
+while ($continue)
 
 	puts "Please enter 's' to start or 'q' to quit".yellow()
 	
@@ -355,7 +365,7 @@ while (continue)
 		currLevel += 1
 	#if the player chooses to quit
 	elsif c == "q"
-		continue = false
+		$continue = false
 	#if the player wants help
 	elsif c == "h"
 		printColorHelp()
