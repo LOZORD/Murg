@@ -1,6 +1,6 @@
+#As of Feb 9 2014
 #include gems here
 require "rubygems"
-
 require "colored"
 
 puts "Welcome to MURG, a terminal text-based game.
@@ -11,6 +11,7 @@ Made by Leo Rudberg (LOZORD) in 2013-14. Written in Ruby.".magenta()
 $arr = [0,1,2,3,4,5,"red","green","yellow","blue","magenta","cyan"]
 
 #TODO add class structure to make all of these global vars nicer
+#TODO fix BUGS below
 
 #a "help menu function"
 def printColorHelp()
@@ -26,7 +27,8 @@ def printColorHelp()
 	puts "Blue and Yellow"
 	puts "When prompted for 'color', enter the color in which the word appears"
 	puts "When prompted for 'word', enter the word that is written"
-	puts "Please enter all data in lowercase and in a single line when prompted for two words"
+	puts "Please enter all data in lowercase and in a single line when "\
+	"prompted for two words"
 	puts "Once you have attained the required points for a given level, "\
 	 "you will be asked if you want to skip to the next level"
 	puts "I apologize to all the colorblind folks out there!"
@@ -417,4 +419,5 @@ end
 
 #XXX FINAL SCORE SUMMARY XXX
 puts ("GAME OVER\n\tYou got to level #{$currLevel}, with #{$points} point(s)!".magenta())
+puts "Thanks for playing!"
 #END OF CODE
