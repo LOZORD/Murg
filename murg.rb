@@ -416,6 +416,7 @@ def playLevel (n)
 		$points += roundPoints
 		if ($timeAvailable > 10)
 			$timeAvailable -= 5
+		end
 	end
 
 end
