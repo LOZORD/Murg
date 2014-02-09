@@ -3,7 +3,7 @@ require "rubygems"
 
 require "colored"
 
-require 'timeout'
+#require 'timeout'
 
 
 puts "Welcome to MURG, a terminal text-based game.
@@ -414,7 +414,8 @@ def playLevel (n)
 		puts "Good job!".green()
 		$currLevel += 1
 		$points += roundPoints
-		$timeAvailable -= 5
+		if ($timeAvailable > 10)
+			$timeAvailable -= 5
 	end
 
 end
