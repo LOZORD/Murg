@@ -9,8 +9,9 @@ I was also very interested in learning Ruby.
 To run
   1) Download/branch/whatever
   2) Go to the file/directory within which murg.rb is contained
-  3) In Terminal, enter 'ruby murg.rb' to play
-  4) Enjoy!
+  3) Run 'gem install colored'
+  4) In Terminal, enter 'ruby murg.rb' to play
+  5) Enjoy!
 
 If you want to know more about the game, enter the "h" command when prompted.
 If you want to know more about me, go to 'cs dot wisc dot edu slash tilde leo'.
