@@ -14,3 +14,5 @@ To run
 
 If you want to know more about the game, enter the "h" command when prompted.
 If you want to know more about me, go to 'cs dot wisc dot edu slash tilde leo'.
+
+Murg cuz it's Grum backwards.
