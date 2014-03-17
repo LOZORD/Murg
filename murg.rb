@@ -322,6 +322,7 @@ def playLevel (n)
 
 		if (((Time.now - start) % 10) == 0)
 			puts "\t\t#{ime.now - start} seconds remaining"
+		end
 
 		case lvl
 		when 0
