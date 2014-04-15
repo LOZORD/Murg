@@ -1,8 +1,8 @@
-#As of Feb 9 2014
+#As of YEAR 20XX
 #include gems here
 require "rubygems"
 require "colored"
-
+#NO MO' REQUIRES!!! *implying Jackson's waifu is a pigdog*
 puts "Welcome to MURG, a terminal text-based game.
 Made by Leo Rudberg (LOZORD) in 2013-14. Written in Ruby.".magenta()
 	
