@@ -2,12 +2,12 @@
 #include gems here
 require "rubygems"
 require "colored"
-
+#this is the end
 puts "Welcome to MURG, a terminal text-based game.
 Made by Leo Rudberg (LOZORD) in 2013-14. Written in Ruby.".magenta()
 	
 #the main array containing the colors and their names
-#a color names appears 6 indicies after its number
+#a color names appears 6 indicies after its number, yes it does
 $arr = [0,1,2,3,4,5,"red","green","yellow","blue","magenta","cyan"]
 
 #TODO add class structure to make all of these global vars nicer
