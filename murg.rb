@@ -1,4 +1,4 @@
-#As of Feb 9 2014
+#As of YEAR 20XX
 #include gems here
 require "rubygems"
 require "colored"
@@ -322,6 +322,7 @@ def playLevel (n)
 
 		if (((Time.now - start) % 10) == 0)
 			puts "\t\t#{ime.now - start} seconds remaining"
+		end
 
 		case lvl
 		when 0
